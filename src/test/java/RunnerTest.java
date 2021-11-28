@@ -1,7 +1,10 @@
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.qameta.allure.selenide.AllureSelenide;
+import io.restassured.RestAssured;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 
@@ -13,14 +16,8 @@ import org.junit.runner.RunWith;
         tags = "@TEST"
 )
 public class RunnerTest{
-    @BeforeAll
-    public static void allureSubThreadParallel() {
-        String listenerName = "AllureSelenide";
-
-        if (!(SelenideLogger.hasListener(listenerName)))
-            SelenideLogger.addListener(listenerName,
-                    new AllureSelenide().
-                            screenshots(true).
-                            savePageSource(false));
+    @BeforeClass
+    public static void before () {
+        RestAssured.filters(new AllureRestAssured());
     }
 }
